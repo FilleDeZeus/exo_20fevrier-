@@ -7,13 +7,12 @@ import './public/css/card.css'
   export const CardList = () => {
 
     const [selectedUserId, setSelectedUserId] = useState(null);
-  const [userData, setUserData] = useState({
+    const [userData, setUserData] = useState({
     name: '',
     email: '',
     city: '',
     tasks: [],
   });
-  const [selectedTask, setSelectedTask] = useState(null);
 
   const handleSelectUser = (userId) => {
     setSelectedUserId(userId);
@@ -26,28 +25,6 @@ import './public/css/card.css'
     setUserData({ ...userData, [name]: value });
   };
 
-  const handleAssignTask = (taskId) => {
-    const task = jsonData.tasks.find(task => task.id === taskId);
-    const updatedTasks = [...userData.tasks, { ...task, completed: false }];
-    const updatedUsers = jsonData.users.map(user => {
-      if (user.id === selectedUserId) {
-        return { ...user, tasks: updatedTasks };
-      }
-      return user;
-    });
-    jsonData.users = updatedUsers;
-    setUserData({ ...userData, tasks: updatedTasks });
-  };
-
-  const handleCompleteTask = (taskId) => {
-    const updatedTasks = userData.tasks.map(task => {
-      if (task.id === taskId) {
-        task.completed = !task.completed;
-      }
-      return task;
-    });
-    setUserData({ ...userData, tasks: updatedTasks });
-  };
   
   const handleSaveChanges = () => {
   if (selectedUserId !== null) {
@@ -65,7 +42,7 @@ import './public/css/card.css'
     <div className="flex flex-col items-center">
       <div className="flex flex-wrap justify-center">
         {jsonData.users.map(user => (
-          <button key={user.id} onClick={() => handleSelectUser(user.id)}>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" key={user.id} onClick={() => handleSelectUser(user.id)}>
             {user.id}
           </button>
         ))}
@@ -84,7 +61,6 @@ import './public/css/card.css'
             <label htmlFor="city" className="mr-2">City: </label>
             <input type="text" name="city" value={userData.city} onChange={handleInputChange} className="rounded-md p-2 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent"/>
           </div>
-          
           <button onClick={handleSaveChanges}>Changer</button>
         </div>
       )}
